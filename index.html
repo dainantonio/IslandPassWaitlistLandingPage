@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IslandPass | Caribbean Resort Subscription</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Tailwind Config & Custom CSS -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            ocean: '#003B5C',      // Deep ocean blue
+                            turquoise: '#00B4D8',  // Vibrant Caribbean turquoise
+                            teal: '#0077B6',       // Mid tone blue
+                            sand: '#FDFBF7',       // Very light warm sand
+                            sandDark: '#F3EFE6',   // Darker sand for borders/cards
+                        }
+                    },
+                    boxShadow: {
+                        'soft': '0 20px 40px -15px rgba(0,0,0,0.05)',
+                        'glow': '0 0 40px -10px rgba(0, 180, 216, 0.4)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Animations */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+
+        /* Floating Animation for Hero Elements */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Glassmorphism utilities */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Gradient text */
+        .text-gradient {
+            background: linear-gradient(135deg, #003B5C, #00B4D8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Custom details accordion styling */
+        details > summary {
+            list-style: none;
+        }
+        details::-webkit-details-marker {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-brand-sand text-slate-800 antialiased overflow-x-hidden">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 transition-all duration-300 bg-white/80 backdrop-blur-md border-b border-white/20 shadow-sm" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-brand-ocean to-brand-turquoise flex items-center justify-center text-white">
+                    <i data-lucide="palmtree" class="w-5 h-5"></i>
+                </div>
+                <span class="text-xl font-bold tracking-tight text-brand-ocean">IslandPass</span>
+            </div>
+            <div class="hidden md:flex items-center gap-8 font-medium text-slate-600">
+                <a href="#how-it-works" class="hover:text-brand-turquoise transition-colors">How it Works</a>
+                <a href="#destinations" class="hover:text-brand-turquoise transition-colors">Destinations</a>
+                <a href="#pricing" class="hover:text-brand-turquoise transition-colors">Plans</a>
+                <a href="#faq" class="hover:text-brand-turquoise transition-colors">FAQ</a>
+            </div>
+            <div class="hidden md:block">
+                <a href="#waitlist" class="bg-brand-ocean hover:bg-brand-teal text-white px-6 py-2.5 rounded-full font-semibold transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5 text-sm md:text-base">
+                    Join Waitlist
+                </a>
+            </div>
+            
+            <!-- Mobile Menu Toggle -->
+            <button id="mobile-menu-btn" class="md:hidden text-brand-ocean p-2 focus:outline-none">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 absolute w-full shadow-lg">
+            <div class="flex flex-col px-6 py-4 space-y-4 font-medium text-slate-600">
+                <a href="#how-it-works" class="hover:text-brand-turquoise transition-colors mobile-link">How it Works</a>
+                <a href="#destinations" class="hover:text-brand-turquoise transition-colors mobile-link">Destinations</a>
+                <a href="#pricing" class="hover:text-brand-turquoise transition-colors mobile-link">Plans</a>
+                <a href="#faq" class="hover:text-brand-turquoise transition-colors mobile-link">FAQ</a>
+                <a href="#waitlist" class="bg-brand-ocean text-white px-6 py-3 rounded-xl text-center font-semibold mobile-link mt-2">Join Waitlist</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden">
+        <!-- Background Gradients -->
+        <div class="absolute inset-0 bg-gradient-to-b from-brand-sand to-white z-0"></div>
+        <div class="absolute top-0 right-0 -translate-y-12 translate-x-1/3 w-[800px] h-[800px] bg-brand-turquoise/10 rounded-full blur-3xl z-0 pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+                
+                <!-- Hero Text -->
+                <div class="text-left">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-turquoise/10 text-brand-teal font-semibold text-sm mb-8 animate-float w-fit">
+                        <span class="relative flex h-3 w-3">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-turquoise opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-brand-turquoise"></span>
+                        </span>
+                        Accepting Early Access Signups
+                    </div>
+                    
+                    <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-brand-ocean mb-6 leading-[1.1]">
+                        Your Passport to <br />
+                        <span class="text-gradient">Endless Paradise</span>
+                    </h1>
+                    
+                    <p class="text-lg md:text-xl text-slate-600 mb-8 max-w-2xl leading-relaxed">
+                        IslandPass lets you travel across premium Caribbean resorts using a simple monthly membership. Skip the massive upfront costs and vacation multiple times a year.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row items-center gap-6">
+                        <a href="#waitlist" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-brand-ocean to-brand-teal text-white rounded-full font-bold text-lg shadow-glow hover:shadow-xl transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                            Join the Waitlist
+                            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </a>
+                        
+                        <div class="flex items-center justify-center gap-4 px-4">
+                            <div class="flex -space-x-3">
+                                <img src="https://i.pravatar.cc/100?img=1" alt="User" class="w-10 h-10 rounded-full border-2 border-brand-sand object-cover">
+                                <img src="https://i.pravatar.cc/100?img=2" alt="User" class="w-10 h-10 rounded-full border-2 border-brand-sand object-cover">
+                                <img src="https://i.pravatar.cc/100?img=3" alt="User" class="w-10 h-10 rounded-full border-2 border-brand-sand object-cover">
+                            </div>
+                            <div class="text-sm font-medium text-slate-600 leading-tight">
+                                <span class="text-brand-ocean font-bold">500+</span><br>already waiting
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Images Composition -->
+                <div class="relative hidden md:block h-[500px] lg:h-[600px] w-full">
+                    <!-- Main Image -->
+                    <div class="absolute right-0 top-1/2 -translate-y-1/2 w-[80%] h-[80%] rounded-3xl overflow-hidden shadow-2xl z-10 border-4 border-white animate-float" style="animation-delay: 0s;">
+                        <img src="https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?auto=format&fit=crop&w=800&q=80" alt="Luxury Resort" class="w-full h-full object-cover">
+                        <div class="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-xl shadow-lg flex items-center gap-2 text-sm font-bold text-brand-ocean">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-brand-turquoise"></i> Turks & Caicos
+                        </div>
+                    </div>
+                    <!-- Secondary Image -->
+                    <div class="absolute left-0 bottom-10 w-[50%] h-[45%] rounded-3xl overflow-hidden shadow-2xl z-20 border-4 border-white animate-float" style="animation-delay: 1.5s;">
+                        <img src="https://images.unsplash.com/photo-1548574505-12caf0050b5b?auto=format&fit=crop&w=600&q=80" alt="Clear Ocean Water" class="w-full h-full object-cover">
+                    </div>
+                    <!-- Decorative Element -->
+                    <div class="absolute top-10 left-10 w-24 h-24 bg-brand-turquoise/20 rounded-full blur-2xl z-0"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Proof Section -->
+    <section class="py-10 border-y border-brand-sandDark bg-white relative z-10">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <p class="text-sm md:text-base font-semibold text-slate-400 uppercase tracking-wider mb-6">
+                Travelers are excited about the future of subscription travel
+            </p>
+            <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-60 grayscale">
+                <!-- Placeholder logos representing press or generic entities -->
+                <div class="flex items-center gap-2 text-xl font-bold"><i data-lucide="compass" class="w-6 h-6"></i> Wanderlust</div>
+                <div class="flex items-center gap-2 text-xl font-bold"><i data-lucide="plane" class="w-6 h-6"></i> TravelWeekly</div>
+                <div class="flex items-center gap-2 text-xl font-bold"><i data-lucide="sun" class="w-6 h-6"></i> ResortInsider</div>
+                <div class="flex items-center gap-2 text-xl font-bold"><i data-lucide="map" class="w-6 h-6"></i> TheNomad</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="py-24 bg-brand-sand relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto mb-16 fade-in-up">
+                <h2 class="text-3xl md:text-5xl font-bold text-brand-ocean mb-4">How IslandPass Works</h2>
+                <p class="text-lg text-slate-600">A seamless way to unlock paradise, month after month.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 relative">
+                <!-- Connecting Line (Desktop) -->
+                <div class="hidden md:block absolute top-12 left-[16%] right-[16%] h-0.5 bg-gradient-to-r from-brand-turquoise/20 via-brand-teal/20 to-brand-ocean/20 z-0"></div>
+
+                <!-- Step 1 -->
+                <div class="relative z-10 bg-white rounded-3xl p-8 shadow-soft border border-brand-sandDark text-center fade-in-up delay-100 hover:-translate-y-2 transition-transform duration-300">
+                    <div class="w-20 h-20 mx-auto bg-brand-sand rounded-2xl flex items-center justify-center mb-6 shadow-inner text-brand-ocean">
+                        <i data-lucide="credit-card" class="w-10 h-10"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-800 mb-3">1. Subscribe</h3>
+                    <p class="text-slate-600 leading-relaxed">Pay a simple, predictable monthly membership tailored to your travel lifestyle.</p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="relative z-10 bg-white rounded-3xl p-8 shadow-soft border border-brand-sandDark text-center fade-in-up delay-200 hover:-translate-y-2 transition-transform duration-300">
+                    <div class="w-20 h-20 mx-auto bg-brand-sand rounded-2xl flex items-center justify-center mb-6 shadow-inner text-brand-turquoise">
+                        <i data-lucide="coins" class="w-10 h-10"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-800 mb-3">2. Earn Travel Credits</h3>
+                    <p class="text-slate-600 leading-relaxed">Receive valuable travel credits added to your account each month.</p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative z-10 bg-white rounded-3xl p-8 shadow-soft border border-brand-sandDark text-center fade-in-up delay-300 hover:-translate-y-2 transition-transform duration-300">
+                    <div class="w-20 h-20 mx-auto bg-brand-sand rounded-2xl flex items-center justify-center mb-6 shadow-inner text-brand-teal">
+                        <i data-lucide="map-pin" class="w-10 h-10"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-800 mb-3">3. Book Resorts</h3>
+                    <p class="text-slate-600 leading-relaxed">Use credits to stay at beautiful, hand-picked Caribbean resorts anytime.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Destinations Section -->
+    <section id="destinations" class="py-24 bg-white relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto mb-16 fade-in-up">
+                <h2 class="text-3xl md:text-5xl font-bold text-brand-ocean mb-4">Your Next Getaway Awaits</h2>
+                <p class="text-lg text-slate-600">
+                    Partnering with top-tier resorts across the most beautiful islands. Where will your membership take you?
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                <!-- Destination Card 1 -->
+                <div class="group relative h-80 rounded-3xl overflow-hidden shadow-md cursor-pointer fade-in-up delay-100 bg-slate-100">
+                    <div id="loader-img-montego" class="absolute inset-0 flex flex-col items-center justify-center text-slate-400 z-0">
+                        <i data-lucide="sparkles" class="w-8 h-8 animate-pulse mb-2 text-brand-turquoise"></i>
+                        <span class="text-xs font-semibold tracking-wider uppercase">Generating AI Image...</span>
+                    </div>
+                    <img id="img-montego" src="" alt="Montego Bay" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-all duration-700 ease-in-out opacity-0 z-10">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent z-20 pointer-events-none"></div>
+                    <div class="absolute bottom-6 left-6 right-6 z-30">
+                        <div class="flex justify-between items-end">
+                            <div>
+                                <h3 class="text-2xl font-bold text-white mb-1">Montego Bay</h3>
+                                <p class="text-white/80 text-sm font-medium flex items-center gap-1"><i data-lucide="map-pin" class="w-3 h-3"></i> Jamaica</p>
+                            </div>
+                            <div class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0">
+                                <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Destination Card 2 -->
+                <div class="group relative h-80 rounded-3xl overflow-hidden shadow-md cursor-pointer fade-in-up delay-200 bg-slate-100">
+                    <div id="loader-img-punta" class="absolute inset-0 flex flex-col items-center justify-center text-slate-400 z-0">
+                        <i data-lucide="sparkles" class="w-8 h-8 animate-pulse mb-2 text-brand-turquoise"></i>
+                        <span class="text-xs font-semibold tracking-wider uppercase">Generating AI Image...</span>
+                    </div>
+                    <img id="img-punta" src="" alt="Punta Cana" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-all duration-700 ease-in-out opacity-0 z-10">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent z-20 pointer-events-none"></div>
+                    <div class="absolute bottom-6 left-6 right-6 z-30">
+                        <div class="flex justify-between items-end">
+                            <div>
+                                <h3 class="text-2xl font-bold text-white mb-1">Punta Cana</h3>
+                                <p class="text-white/80 text-sm font-medium flex items-center gap-1"><i data-lucide="map-pin" class="w-3 h-3"></i> Dominican Republic</p>
+                            </div>
+                            <div class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0">
+                                <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Destination Card 3 -->
+                <div class="group relative h-80 rounded-3xl overflow-hidden shadow-md cursor-pointer fade-in-up delay-300 bg-slate-100">
+                    <div id="loader-img-nassau" class="absolute inset-0 flex flex-col items-center justify-center text-slate-400 z-0">
+                        <i data-lucide="sparkles" class="w-8 h-8 animate-pulse mb-2 text-brand-turquoise"></i>
+                        <span class="text-xs font-semibold tracking-wider uppercase">Generating AI Image...</span>
+                    </div>
+                    <img id="img-nassau" src="" alt="Nassau" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-all duration-700 ease-in-out opacity-0 z-10">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent z-20 pointer-events-none"></div>
+                    <div class="absolute bottom-6 left-6 right-6 z-30">
+                        <div class="flex justify-between items-end">
+                            <div>
+                                <h3 class="text-2xl font-bold text-white mb-1">Nassau</h3>
+                                <p class="text-white/80 text-sm font-medium flex items-center gap-1"><i data-lucide="map-pin" class="w-3 h-3"></i> Bahamas</p>
+                            </div>
+                            <div class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0">
+                                <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Destination Card 4 -->
+                <div class="group relative h-80 rounded-3xl overflow-hidden shadow-md cursor-pointer fade-in-up delay-100 lg:col-span-2 bg-slate-100">
+                    <div id="loader-img-negril" class="absolute inset-0 flex flex-col items-center justify-center text-slate-400 z-0">
+                        <i data-lucide="sparkles" class="w-8 h-8 animate-pulse mb-2 text-brand-turquoise"></i>
+                        <span class="text-xs font-semibold tracking-wider uppercase">Generating AI Image...</span>
+                    </div>
+                    <img id="img-negril" src="" alt="Negril" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-all duration-700 ease-in-out opacity-0 z-10">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent z-20 pointer-events-none"></div>
+                    <div class="absolute bottom-6 left-6 right-6 z-30">
+                        <div class="flex justify-between items-end">
+                            <div>
+                                <h3 class="text-3xl font-bold text-white mb-1">Negril</h3>
+                                <p class="text-white/80 text-sm font-medium flex items-center gap-1"><i data-lucide="map-pin" class="w-3 h-3"></i> Jamaica</p>
+                            </div>
+                            <div class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0">
+                                <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Coming Soon Card -->
+                <div class="group relative h-80 rounded-3xl overflow-hidden shadow-inner border-2 border-dashed border-slate-300 bg-slate-50 flex flex-col items-center justify-center text-center p-6 fade-in-up delay-200">
+                    <div class="w-16 h-16 rounded-full bg-brand-turquoise/10 flex items-center justify-center text-brand-turquoise mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <i data-lucide="plus" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-700 mb-2">More Islands</h3>
+                    <p class="text-slate-500 text-sm">Vote on our next destinations when you join the waitlist.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Memberships Section -->
+    <section id="pricing" class="py-24 bg-brand-sand">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto mb-16 fade-in-up">
+                <h2 class="text-3xl md:text-5xl font-bold text-brand-ocean mb-4">Membership Examples</h2>
+                <p class="text-lg text-slate-600">These are conceptual plans to show you how affordable paradise can be.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 items-center max-w-6xl mx-auto">
+                <!-- Explorer Plan -->
+                <div class="bg-white rounded-3xl p-8 border border-brand-sandDark shadow-sm fade-in-up delay-100">
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">Explorer Plan</h3>
+                    <div class="flex items-baseline gap-1 mb-6">
+                        <span class="text-4xl font-extrabold text-brand-ocean">$149</span>
+                        <span class="text-slate-500 font-medium">/month</span>
+                    </div>
+                    <ul class="space-y-4 mb-8 text-slate-600">
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="check" class="w-5 h-5 text-brand-turquoise shrink-0"></i>
+                            <span>Perfect for an annual 5-day getaway</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="check" class="w-5 h-5 text-brand-turquoise shrink-0"></i>
+                            <span>Standard room access</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="check" class="w-5 h-5 text-brand-turquoise shrink-0"></i>
+                            <span>Rollover unused credits</span>
+                        </li>
+                    </ul>
+                    <button onclick="document.getElementById('waitlist-email').focus()" class="w-full py-3 px-4 rounded-xl border-2 border-brand-ocean text-brand-ocean font-bold hover:bg-brand-ocean hover:text-white transition-colors">
+                        Select Concept
+                    </button>
+                </div>
+
+                <!-- Traveler Plan (Highlighted) -->
+                <div class="bg-brand-ocean text-white rounded-3xl p-8 border border-brand-teal shadow-xl transform md:-translate-y-4 relative fade-in-up delay-200">
+                    <div class="absolute top-0 right-8 transform -translate-y-1/2">
+                        <span class="bg-brand-turquoise text-white text-xs font-bold uppercase tracking-wider py-1 px-3 rounded-full">Most Popular Concept</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand-sand mb-2">Traveler Plan</h3>
+                    <div class="flex items-baseline gap-1 mb-6">
+                        <span class="text-5xl font-extrabold text-white">$299</span>
+                        <span class="text-brand-sandDark/80 font-medium">/month</span>
+                    </div>
+                    <ul class="space-y-4 mb-8 text-brand-sandDark/90">
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="check" class="w-5 h-5 text-brand-turquoise shrink-0"></i>
+                            <span class="text-white">Enough for two 4-day trips a year</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="check" class="w-5 h-5 text-brand-turquoise shrink-0"></i>
+                            <span class="text-white">Ocean view upgrades when available</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="check" class="w-5 h-5 text-brand-turquoise shrink-0"></i>
+                            <span class="text-white">Airport transfer credits included</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="check" class="w-5 h-5 text-brand-turquoise shrink-0"></i>
+                            <span class="text-white">Rollover unused credits</span>
+                        </li>
+                    </ul>
+                    <button onclick="document.getElementById('waitlist-email').focus()" class="w-full py-3 px-4 rounded-xl bg-brand-turquoise text-white font-bold hover:bg-white hover:text-brand-ocean transition-colors shadow-glow">
+                        Select Concept
+                    </button>
+                </div>
+
+                <!-- Nomad Plan -->
+                <div class="bg-white rounded-3xl p-8 border border-brand-sandDark shadow-sm fade-in-up delay-300">
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">Nomad Plan</h3>
+                    <div class="flex items-baseline gap-1 mb-6">
+                        <span class="text-4xl font-extrabold text-brand-ocean">$599</span>
+                        <span class="text-slate-500 font-medium">/month</span>
+                    </div>
+                    <ul class="space-y-4 mb-8 text-slate-600">
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="check" class="w-5 h-5 text-brand-turquoise shrink-0"></i>
+                            <span>Up to 4 extended trips per year</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="check" class="w-5 h-5 text-brand-turquoise shrink-0"></i>
+                            <span>Suite access & premium amenities</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="check" class="w-5 h-5 text-brand-turquoise shrink-0"></i>
+                            <span>Bring a guest for free</span>
+                        </li>
+                    </ul>
+                    <button onclick="document.getElementById('waitlist-email').focus()" class="w-full py-3 px-4 rounded-xl border-2 border-brand-ocean text-brand-ocean font-bold hover:bg-brand-ocean hover:text-white transition-colors">
+                        Select Concept
+                    </button>
+                </div>
+            </div>
+            
+            <p class="text-center text-sm text-slate-400 mt-10 max-w-2xl mx-auto">
+                * Note: IslandPass is currently in early access testing. The pricing plans shown above are illustrative examples and subject to change before our official launch.
+            </p>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-24 bg-white relative">
+        <div class="max-w-3xl mx-auto px-6">
+            <div class="text-center mb-16 fade-in-up">
+                <h2 class="text-3xl md:text-5xl font-bold text-brand-ocean mb-4">Frequently Asked Questions</h2>
+                <p class="text-lg text-slate-600">Everything you need to know about the IslandPass concept.</p>
+            </div>
+
+            <div class="space-y-4 fade-in-up delay-100">
+                <!-- FAQ Item 1 -->
+                <details class="group bg-brand-sand rounded-2xl border border-brand-sandDark">
+                    <summary class="flex cursor-pointer items-center justify-between gap-1.5 p-6 font-semibold text-slate-800">
+                        <h3 class="text-lg">Is IslandPass available now?</h3>
+                        <span class="shrink-0 rounded-full bg-white p-2 text-brand-ocean shadow-sm">
+                            <i data-lucide="chevron-down" class="w-5 h-5 transition duration-300 group-open:-rotate-180"></i>
+                        </span>
+                    </summary>
+                    <div class="px-6 pb-6 text-slate-600 leading-relaxed border-t border-brand-sandDark mt-2 pt-4">
+                        IslandPass is currently in development. Join the waitlist to get early access when memberships launch.
+                    </div>
+                </details>
+
+                <!-- FAQ Item 2 -->
+                <details class="group bg-brand-sand rounded-2xl border border-brand-sandDark">
+                    <summary class="flex cursor-pointer items-center justify-between gap-1.5 p-6 font-semibold text-slate-800">
+                        <h3 class="text-lg">How would the subscription work?</h3>
+                        <span class="shrink-0 rounded-full bg-white p-2 text-brand-ocean shadow-sm">
+                            <i data-lucide="chevron-down" class="w-5 h-5 transition duration-300 group-open:-rotate-180"></i>
+                        </span>
+                    </summary>
+                    <div class="px-6 pb-6 text-slate-600 leading-relaxed border-t border-brand-sandDark mt-2 pt-4">
+                        Members would pay a monthly fee and receive travel credits that can be used toward resort stays.
+                    </div>
+                </details>
+
+                <!-- FAQ Item 3 -->
+                <details class="group bg-brand-sand rounded-2xl border border-brand-sandDark">
+                    <summary class="flex cursor-pointer items-center justify-between gap-1.5 p-6 font-semibold text-slate-800">
+                        <h3 class="text-lg">What destinations would be included?</h3>
+                        <span class="shrink-0 rounded-full bg-white p-2 text-brand-ocean shadow-sm">
+                            <i data-lucide="chevron-down" class="w-5 h-5 transition duration-300 group-open:-rotate-180"></i>
+                        </span>
+                    </summary>
+                    <div class="px-6 pb-6 text-slate-600 leading-relaxed border-t border-brand-sandDark mt-2 pt-4">
+                        We are exploring partnerships across the Caribbean including places like Jamaica, Bahamas, and the Dominican Republic.
+                    </div>
+                </details>
+
+                <!-- FAQ Item 4 -->
+                <details class="group bg-brand-sand rounded-2xl border border-brand-sandDark">
+                    <summary class="flex cursor-pointer items-center justify-between gap-1.5 p-6 font-semibold text-slate-800">
+                        <h3 class="text-lg">Will this work with major resort brands?</h3>
+                        <span class="shrink-0 rounded-full bg-white p-2 text-brand-ocean shadow-sm">
+                            <i data-lucide="chevron-down" class="w-5 h-5 transition duration-300 group-open:-rotate-180"></i>
+                        </span>
+                    </summary>
+                    <div class="px-6 pb-6 text-slate-600 leading-relaxed border-t border-brand-sandDark mt-2 pt-4">
+                        Our goal is to partner with a wide range of resorts and hospitality groups.
+                    </div>
+                </details>
+                
+                <!-- FAQ Item 5 -->
+                <details class="group bg-brand-sand rounded-2xl border border-brand-sandDark">
+                    <summary class="flex cursor-pointer items-center justify-between gap-1.5 p-6 font-semibold text-slate-800">
+                        <h3 class="text-lg">Why join the waitlist?</h3>
+                        <span class="shrink-0 rounded-full bg-white p-2 text-brand-ocean shadow-sm">
+                            <i data-lucide="chevron-down" class="w-5 h-5 transition duration-300 group-open:-rotate-180"></i>
+                        </span>
+                    </summary>
+                    <div class="px-6 pb-6 text-slate-600 leading-relaxed border-t border-brand-sandDark mt-2 pt-4">
+                        Waitlist members will get early access, special launch pricing, and the ability to help shape the platform.
+                    </div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- Waitlist CTA Section -->
+    <section id="waitlist" class="py-24 bg-brand-sand relative">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="bg-gradient-to-br from-brand-ocean to-brand-teal rounded-[2.5rem] p-8 md:p-14 shadow-2xl relative overflow-hidden fade-in-up">
+                <!-- Decorative background elements -->
+                <div class="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
+                <div class="absolute bottom-0 left-0 w-64 h-64 bg-brand-turquoise opacity-20 rounded-full blur-3xl transform -translate-x-1/2 translate-y-1/2"></div>
+                
+                <div class="relative z-10 grid md:grid-cols-2 gap-12 items-center">
+                    <div class="text-white">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-4 leading-tight">Be the first to know when we launch.</h2>
+                        <p class="text-brand-sandDark mb-8 text-lg">
+                            Join the early access list today to secure founder-level pricing and priority access to our first resort partners.
+                        </p>
+                        <ul class="space-y-3">
+                            <li class="flex items-center gap-3 text-brand-sand">
+                                <div class="w-6 h-6 rounded-full bg-brand-turquoise/20 flex items-center justify-center">
+                                    <i data-lucide="check" class="w-3 h-3 text-brand-turquoise"></i>
+                                </div>
+                                No credit card required
+                            </li>
+                            <li class="flex items-center gap-3 text-brand-sand">
+                                <div class="w-6 h-6 rounded-full bg-brand-turquoise/20 flex items-center justify-center">
+                                    <i data-lucide="check" class="w-3 h-3 text-brand-turquoise"></i>
+                                </div>
+                                Vote on our first destinations
+                            </li>
+                            <li class="flex items-center gap-3 text-brand-sand">
+                                <div class="w-6 h-6 rounded-full bg-brand-turquoise/20 flex items-center justify-center">
+                                    <i data-lucide="check" class="w-3 h-3 text-brand-turquoise"></i>
+                                </div>
+                                Exclusive founder perks
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Form Container -->
+                    <div class="bg-white rounded-3xl p-6 md:p-8 shadow-xl" id="form-wrapper">
+                        <form id="waitlist-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                            <div>
+                                <label for="name" class="block text-sm font-semibold text-slate-700 mb-1">Full Name</label>
+                                <input type="text" id="name" name="name" required placeholder="Jane Doe" 
+                                    class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-turquoise focus:border-transparent transition-all bg-slate-50">
+                            </div>
+                            <div>
+                                <label for="waitlist-email" class="block text-sm font-semibold text-slate-700 mb-1">Email Address</label>
+                                <input type="email" id="waitlist-email" name="email" required placeholder="jane@example.com" 
+                                    class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-turquoise focus:border-transparent transition-all bg-slate-50">
+                            </div>
+                            <div>
+                                <label for="destination" class="block text-sm font-semibold text-slate-700 mb-1">Dream Destination</label>
+                                <select id="destination" name="destination" required 
+                                    class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-turquoise focus:border-transparent transition-all bg-slate-50 text-slate-600 appearance-none">
+                                    <option value="" disabled selected>Where do you want to go?</option>
+                                    <option value="montego-bay">Montego Bay, Jamaica</option>
+                                    <option value="punta-cana">Punta Cana, DR</option>
+                                    <option value="nassau">Nassau, Bahamas</option>
+                                    <option value="negril">Negril, Jamaica</option>
+                                    <option value="other">Other / Surprise me</option>
+                                </select>
+                            </div>
+                            <button type="submit" id="submit-btn" class="w-full py-4 mt-2 bg-brand-ocean text-white rounded-xl font-bold text-lg hover:bg-brand-teal transition-colors shadow-md flex justify-center items-center gap-2 group">
+                                <span>Join the Early Access List</span>
+                                <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+                            </button>
+                            <p class="text-xs text-center text-slate-500 mt-4 flex items-center justify-center gap-1">
+                                <i data-lucide="lock" class="w-3 h-3"></i> We respect your privacy. No spam.
+                            </p>
+                        </form>
+                        
+                        <!-- Success Message (Hidden by default) -->
+                        <div id="success-message" class="hidden text-center py-8">
+                            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i data-lucide="check" class="w-8 h-8 text-green-600"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-slate-800 mb-2">You're on the list!</h3>
+                            <p class="text-slate-600">Keep an eye on your inbox. We'll be in touch soon with exclusive updates.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col items-center justify-center text-center">
+            <div class="flex items-center gap-2 mb-6 opacity-80">
+                <i data-lucide="palmtree" class="w-6 h-6 text-brand-turquoise"></i>
+                <span class="text-xl font-bold tracking-tight text-white">IslandPass</span>
+            </div>
+            <p class="mb-6 max-w-md">
+                IslandPass – Caribbean Travel Membership Concept. <br>
+                Reimagining how you experience paradise.
+            </p>
+            <div class="flex gap-4 mb-8">
+                <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-brand-ocean hover:text-white transition-colors">
+                    <i data-lucide="instagram" class="w-5 h-5"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-brand-ocean hover:text-white transition-colors">
+                    <i data-lucide="twitter" class="w-5 h-5"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-brand-ocean hover:text-white transition-colors">
+                    <i data-lucide="facebook" class="w-5 h-5"></i>
+                </a>
+            </div>
+            <p class="text-sm">
+                &copy; <span id="year"></span> IslandPass Concept. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Set Current Year in Footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 20) {
+                nav.classList.add('shadow-md');
+                nav.classList.replace('bg-white/80', 'bg-white/95');
+            } else {
+                nav.classList.remove('shadow-md');
+                nav.classList.replace('bg-white/95', 'bg-white/80');
+            }
+        });
+
+        // Mobile Menu Toggle logic
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+        let menuIcon = mobileBtn.querySelector('i');
+
+        function toggleMenu() {
+            mobileMenu.classList.toggle('hidden');
+            if (mobileMenu.classList.contains('hidden')) {
+                menuIcon.setAttribute('data-lucide', 'menu');
+            } else {
+                menuIcon.setAttribute('data-lucide', 'x');
+            }
+            lucide.createIcons();
+        }
+
+        mobileBtn.addEventListener('click', toggleMenu);
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', toggleMenu);
+        });
+
+        // Intersection Observer for Fade-In Animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-up').forEach(element => {
+            observer.observe(element);
+        });
+
+        // Handle Form Submission (Simulated)
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            const btn = document.getElementById('submit-btn');
+            const originalText = btn.innerHTML;
+            
+            // Loading state
+            btn.innerHTML = `<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> Processing...`;
+            lucide.createIcons();
+            btn.disabled = true;
+
+            // Simulate API Call
+            setTimeout(() => {
+                document.getElementById('waitlist-form').classList.add('hidden');
+                const successMsg = document.getElementById('success-message');
+                successMsg.classList.remove('hidden');
+                
+                // Trigger reflow for simple fade effect
+                void successMsg.offsetWidth; 
+                successMsg.classList.add('animate-[pulse_0.5s_ease-in-out]');
+            }, 1500);
+        }
+
+        // --- AI Image Generation Logic ---
+        const apiKey = ""; // API Key provided by execution environment at runtime
+
+        const destinationPrompts = [
+            { id: 'img-montego', prompt: 'Cinematic, ultra-realistic 4k photograph of a beautiful tropical beach in Montego Bay Jamaica, crystal clear turquoise water, white sand, luxury resort in background, bright sunny day' },
+            { id: 'img-punta', prompt: 'Cinematic, ultra-realistic 4k photograph of Punta Cana Dominican Republic, palm trees leaning over a white sand beach, clear blue ocean water, relaxing sunny vacation' },
+            { id: 'img-nassau', prompt: 'Cinematic, ultra-realistic 4k photograph of Nassau Bahamas, pristine beautiful tropical beach, luxury cabanas over water, turquoise ocean, perfect vacation day' },
+            { id: 'img-negril', prompt: 'Cinematic, ultra-realistic 4k photograph of Negril Jamaica seven mile beach, vibrant sunset over the calm ocean, tropical paradise, beautiful vibrant colors' }
+        ];
+
+        const fallbackImages = {
+            'img-montego': 'https://images.unsplash.com/photo-1583325988584-6019557b7f16?auto=format&fit=crop&w=600&q=80',
+            'img-punta': 'https://images.unsplash.com/photo-1589115712861-5bd6b6a37651?auto=format&fit=crop&w=600&q=80',
+            'img-nassau': 'https://images.unsplash.com/photo-1542289196-0f1ba8e348df?auto=format&fit=crop&w=600&q=80',
+            'img-negril': 'https://images.unsplash.com/photo-1518182170546-076616fd44e5?auto=format&fit=crop&w=1000&q=80'
+        };
+
+        function fallbackToUnsplash(elementId) {
+            const imgEl = document.getElementById(elementId);
+            if(imgEl) {
+                imgEl.src = fallbackImages[elementId];
+                imgEl.classList.remove('opacity-0');
+                const loader = document.getElementById(`loader-${elementId}`);
+                if(loader) loader.style.display = 'none';
+            }
+        }
+
+        async function generateAIImage(promptData) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key=${apiKey}`;
+            const payload = {
+                instances: { prompt: promptData.prompt },
+                parameters: { sampleCount: 1 }
+            };
+
+            let retries = 5;
+            let delay = 1000;
+
+            while (retries > 0) {
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+                    const result = await response.json();
+                    if (result.predictions && result.predictions[0] && result.predictions[0].bytesBase64Encoded) {
+                        const imageUrl = `data:image/png;base64,${result.predictions[0].bytesBase64Encoded}`;
+                        const imgEl = document.getElementById(promptData.id);
+                        if(imgEl) {
+                            imgEl.src = imageUrl;
+                            imgEl.classList.remove('opacity-0');
+                            const loader = document.getElementById(`loader-${promptData.id}`);
+                            if(loader) loader.style.display = 'none';
+                        }
+                        return; // Success, exit loop
+                    } else {
+                        throw new Error("Invalid image response format");
+                    }
+                } catch (error) {
+                    retries--;
+                    if (retries === 0) {
+                        console.error(`AI generation failed for ${promptData.id}, falling back...`, error);
+                        fallbackToUnsplash(promptData.id);
+                    } else {
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                        delay *= 2; // Exponential backoff: 1s, 2s, 4s, 8s, 16s
+                    }
+                }
+            }
+        }
+
+        // Trigger generation on window load to ensure smooth parallel loading
+        window.addEventListener('load', () => {
+            destinationPrompts.forEach(data => generateAIImage(data));
+        });
+
+    </script>
+</body>
+</html>
