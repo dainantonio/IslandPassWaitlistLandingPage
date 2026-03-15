@@ -716,10 +716,11 @@
             observer.observe(element);
         });
 
-        // Handle Form Submission (Simulated)
-        function handleFormSubmit(e) {
+        // Handle Form Submission (Real Connection via Formspree)
+        async function handleFormSubmit(e) {
             e.preventDefault();
             
+            const form = e.target;
             const btn = document.getElementById('submit-btn');
             const originalText = btn.innerHTML;
             
@@ -728,16 +729,37 @@
             lucide.createIcons();
             btn.disabled = true;
 
-            // Simulate API Call
-            setTimeout(() => {
-                document.getElementById('waitlist-form').classList.add('hidden');
-                const successMsg = document.getElementById('success-message');
-                successMsg.classList.remove('hidden');
-                
-                // Trigger reflow for simple fade effect
-                void successMsg.offsetWidth; 
-                successMsg.classList.add('animate-[pulse_0.5s_ease-in-out]');
-            }, 1500);
+            try {
+                // Actual Formspree Endpoint
+                const response = await fetch('https://formspree.io/f/mgonlqyl', {
+                    method: 'POST',
+                    body: new FormData(form),
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    // Hide form and show our custom success message
+                    document.getElementById('waitlist-form').classList.add('hidden');
+                    const successMsg = document.getElementById('success-message');
+                    successMsg.classList.remove('hidden');
+                    
+                    // Trigger reflow for simple fade effect
+                    void successMsg.offsetWidth; 
+                    successMsg.classList.add('animate-[pulse_0.5s_ease-in-out]');
+                } else {
+                    alert("Oops! There was a problem submitting your form. Please try again.");
+                    btn.innerHTML = originalText;
+                    lucide.createIcons();
+                    btn.disabled = false;
+                }
+            } catch (error) {
+                alert("Oops! Network error. Please check your connection and try again.");
+                btn.innerHTML = originalText;
+                lucide.createIcons();
+                btn.disabled = false;
+            }
         }
 
         // --- AI Image Generation Logic ---
